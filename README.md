@@ -29,4 +29,4 @@ https://github.com/jonatascp/PhotoAlbum.git
 
 https://www.assembla.com/code/buscaproduto/subversion/nodes
 
-Obs: OUtros arquivos importante estão em anexo no projeto. 
+Obs: Outros arquivos importante estão em anexo no projeto. 
