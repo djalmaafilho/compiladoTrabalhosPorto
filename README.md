@@ -1,7 +1,7 @@
 # compiladoTrabalhosPorto
 Compilado de Trabalhos turma porto 2015
 
-=========================== URLS de Trabalho das Turmas 1 e 2 ===========================
+URLS de Trabalho das Turmas 1 e 2
 
 https://dl.dropboxusercontent.com/u/5992545/projeto_gcm.zip
 
@@ -28,3 +28,5 @@ https://github.com/carlosrsjunior/MyPong
 https://github.com/jonatascp/PhotoAlbum.git
 
 https://www.assembla.com/code/buscaproduto/subversion/nodes
+
+Obs: OUtros arquivos importante estão em anexo no projeto. 
