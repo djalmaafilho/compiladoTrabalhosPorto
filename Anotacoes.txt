@@ -1,0 +1,590 @@
+"Atalhos de tecla Android Studio"
+
+Ctrl  + (Teclado numérico /) Comenta / Retira Comentário de trecho de código 
+Ctrl  + (Teclado numérico +) Expande Detalhes de Texto (Strings, Resources, Lambdas)
+Ctrl  + (Teclado numérico +) Esconde detalhes de Texto (Strings, Resources, Lambdas)
+ALT + SHIFT + Seta para Cima (Carrega trecho de código pra cima)
+ALT + SHIFT + Seta para Baixo (Carrega trecho de código pra baixo)
+SHIFT + F10 (Compila o programa e Executa)
+SHIFT + F9 (Compila o programa e Executa em modo Debug)
+CTRL + B (Navega até código fonte referenciado) 
+ALT + SHITF + INSERT (Habilitar/Desabilitar Edição multilinhas)
+ALT + ENTER ( Abre caixa de Sugestão para Erros, Warning etc)  
+
+Mudar teclas de atalho pra sua IDE preferida.
+
+File - > Settings -> KeyMap -> Na aba a direita muda o combo keymaps para a IDE pretendida.
+
+Atividades Aula 01:
+Configurar ambiente
+Criar Aplicação
+Executar Hello World
+
+elisson7@gmail.com
+
+djalmaafilho@gmail.com
+
+Intents.
+
+http://developer.android.com/guide/components/intents-common.html
+
+==================================================================
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="fill_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".SplashActivity"
+    android:orientation="vertical"
+    >
+
+    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|top"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center">
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            />
+        </LinearLayout>
+
+
+</LinearLayout>
+
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ProgressBar;
+public class SplashActivity extends ActionBarActivity implements Runnable{
+
+    private static final int DELAY = 2000;
+    private static final int ACTION_BAR_UPDATE = DELAY /100;
+    private static final int PROGRESS_INCREMENT_CODE = 1;
+    private Handler h , progressHandle;
+    private ProgressBar progressBar;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.splash_main);
+
+        h = new Handler();
+        h.postDelayed(this, DELAY);
+
+        progressHandle = new MeuHandler();
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        updateProgressBar();
+    }
+
+    private void updateProgressBar(){
+        progressBar.incrementProgressBy(1);
+        Message msg = new Message();
+        msg.what = PROGRESS_INCREMENT_CODE;
+        progressHandle.sendMessageDelayed(msg, ACTION_BAR_UPDATE);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void run() {
+        Intent it = new Intent(this, MainActivity.class);
+        startActivity(it);
+        finish();
+    }
+
+    @Override
+    public void finish() {
+        h.removeCallbacksAndMessages(null);
+        progressHandle.removeCallbacksAndMessages(null);
+        super.finish();
+    }
+
+   class MeuHandler extends Handler{
+
+       @Override
+       public void handleMessage(Message msg) {
+           super.handleMessage(msg);
+           switch (msg.what){
+               case PROGRESS_INCREMENT_CODE:
+                    updateProgressBar();
+               break;
+           }
+       }
+   }
+}
+=======================================
+
+    <string name="app_name">Aula02E03</string>
+    <string name="bt_scroll_view_tela">Scroll View Tela</string>
+    <string name="bt_list_view_tela">List View Tela</string>
+    <string name="bt_telefonar">Telefonar</string>
+    <string name="splash">Tela de Splash</string>
+    <string name="item_cabecalho">Cabeçalho</string>
+    <string name="item_detalhes">sadsdasdassdadad/asdadasdadsasd/asdadsadssadasdasdadsasdasdasdasdasdadsadasdasdadsa</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="nova_tela_label">Nova Tela</string>
+    <string name="action_settings">Settings</string>
+    <string name="main_label">Ciclo de vida</string>
+    <string name="title_activity_nova_tela">Nova Tela Activity</string>
+    <string name="title_activity_list_view">ListViewActivity</string>
+
+
+=================== Sabado ========================
+
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
+
+public class OLaMundoActivity extends ActionBarActivity implements
+        View.OnClickListener{
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_ola_mundo);
+        Button bt = (Button)findViewById(R.id.button);
+        bt.setOnClickListener(this);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_ola_mundo, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.button){
+            Toast.makeText(this, "Ola Mundo", Toast.LENGTH_LONG)
+                    .show();
+        }
+    }
+}
+
+===========================================
+
+
+import android.content.Intent;
+import android.os.Handler;
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ProgressBar;
+
+
+public class SplashActivity extends ActionBarActivity implements
+Runnable{
+
+    private ProgressRunnable progressRunnable;
+    private ProgressBar progressBar;
+    private static int DELAY = 2000;
+    private Handler h;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash);
+
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+
+        h = new Handler();
+        h.postDelayed(this, DELAY);
+
+        progressRunnable = new ProgressRunnable();
+        updateProgressBar();
+    }
+
+    private void updateProgressBar(){
+       progressBar.incrementProgressBy(1);
+       h.postDelayed(progressRunnable, DELAY/100);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_splash, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void abrirNovaTela(){
+        Intent it = new Intent(this, OLaMundoActivity.class);
+        startActivity(it);
+    }
+
+    @Override
+    public void run() {
+        abrirNovaTela();
+        finish();
+    }
+
+    class ProgressRunnable implements  Runnable{
+        @Override
+        public void run() {
+            updateProgressBar();
+        }
+    }
+
+    @Override
+    public void finish() {
+        h.removeCallbacksAndMessages(null);
+        super.finish();
+    }
+}
+=========================================
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="com.example.administrator.olamundo.SplashActivity">
+
+    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        />
+
+</LinearLayout>
+
+===================================================
+
+Roteiro Para Simulado 01 
+
+Classe R
+Activity
+Metodos
+Ciclo de Vida
+Resources
+Intent
+Intent Filter
+Estrutura de Projeto - Pastas
+Basico Sobre - View
+Ligação entre Activity e XML (set Content)
+Como Acessar Widgets (Botões, Views etc) Dentro da Activity
+Match_Parent e Wrap_content funcção das constasntes de tela.
+Processo de compilação.
+Como indicamos a activity que inicia o projeto.
+Processo de Instanciaçaõ de uma Intent.				
+
+====================================================
+
+http://android-developers.blogspot.com.br/2009/11/integrating-application-with-intents.html					
+
+====================================================
+
+
+
+Roteiro para prova 2 noite
+
+
+Fim do Capitulo 2 e Capítulo 3. 
+Linear Layout, TableLayout, RelativeLayout, FrameLayout.
+ScroolView, EditText, TextView, ListView, Adapter, 
+Extendendo View (CustomView). Style, Theme.
+RadioGroup, RadioButton, Passagem de parâmetros via Intent.
+ProgressBar.
+
+
+====================================================
+
+
+wv.setWebViewClient(new WebViewClient(){
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+        });
+
+@Override
+    public void onBackPressed() {
+        if(wv.canGoBack()) {
+            wv.goBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
+========================================================
+
+public class JavaScriptInterface {
+
+        Context mContext;
+
+        /** Instantiate the interface and set the context */
+        JavaScriptInterface(Context c) {
+            mContext = c;
+        }
+}
+
+====================Chamada a jsi =======================
+
+        JavaScriptInterface jsI = new JavaScriptInterface(this);
+        wv.addJavascriptInterface(jsI, "JavaScriptInterface");
+
+======================================================
+
+
+@JavascriptInterface
+ public String botaoNome(){
+       return "Botão carregado via interface Java";
+ }
+
+
+function carregarBotaoNome(){
+    var nome = JavaScriptInterface.botaoNome();
+    var elemento = document.getElementById("btCarregarNome");
+    elemento.value = nome;
+}
+
+
+Android Performance Tip #1
+http://www.crittercism.com/blog/android-performance-tip-1
+
+Preparar imagem
+http://romannurik.github.io/AndroidAssetStudio/icons-launcher.html#foreground.type=image&foreground.space.trim=1&foreground.space.pad=0.05&foreColor=607d8b%2C0&crop=0&backgroundShape=hrect&backColor=ffffff%2C100&effects=shadow
+
+======================================Grid Layout =====================
+
+http://stackoverflow.com/questions/11863329/gridlayout-and-row-column-span-woe
+
+=====================================================================
+http://labs.udacity.com/android-visualizer/#/android/text-view
+
+=====================================================================
+
+https://www.sqlite.org/datatype3.html
+
+=====================================================================
+
+Uri uri = Uri.parse("content://dpassos.com.br.persistencia/pessoa");
+        Cursor c = getContentResolver().query(uri,null,null,null,null);
+
+        if(c != null && c.moveToFirst()){
+            while(c.moveToNext()){
+                Log.i("CLIENT", c.getString(0));
+            }
+        }else{
+            Log.i("CLIENT", "NO CONTENT");
+        }
+        c.close();
+
+-----
+ public void teste (View v){
+
+        Uri uri = Uri.parse("content://dpassos.com.br.persistencia/pessoa");
+
+        Intent i = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(i);
+    }
+
+-------
+Uri data = getIntent().getData();
+
+        if(data != null){
+            Cursor c = getContentResolver().query(data,null,null,null,null);
+            if(c != null && c.moveToFirst()){
+                String vStr = "";
+                while(c.moveToNext()){
+                    vStr +=c.getString(0) + "\n";
+                }
+                Toast.makeText(this, vStr, Toast.LENGTH_SHORT).show();
+
+
+            }
+            c.close();
+
+        }else{
+
+            Uri uri = Uri.parse("content://dpassos.com.br.persistencia/pessoa");
+            Cursor c = getContentResolver().query(uri,null,null,null,null);
+
+            if(c != null && c.moveToFirst()){
+                while(c.moveToNext()){
+                    System.out.println(c.getString(0));
+                }
+            }
+            c.close();
+        }
+
+---------
+ <activity
+            android:name=".ProviderClienteActivity"
+            android:label="@string/title_activity_provider_cliente" >
+
+
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.VIEW"></action>
+                <data android:mimeType="vnd.android.cursor.dir/vnd.dpassos.com.br.persistencia.pessoa" />
+            </intent-filter>
+        </activity>
+
+================================================================================
+Recriar a classe R
+
+I managed to regenerate R: File->Settings->Compiler
+then UNCHECK "Use in-process build"
+Rebuild Project
+================================================================================
+
+Roteiro Simulado 03
+
+Persistencia : Diretorio protegido, Diretorio Externo, Preferencias, Banco de dados SQlite
+Salvamento automatico de dados da instancia da aplicação.
+Herdando da classe Aplication
+Cursor
+SqliteOpenHelper
+Versão do Banco de dados, metodos chamados primeira vez, update
+Content provider, Como criar e consumir.
+Padrão Observer através de LocalBroadCastManager    
+WebView
+
+================================================================================
+
+http://www.androidhive.info/2015/04/android-getting-started-with-material-design/
+
+https://developer.android.com/training/material/get-started.html
+
+http://appindex.com/blog/ten-best-cross-platform-development-mobile-enterprises/
+
+http://thinkapps.com/blog/development/develop-for-ios-v-android-cross-platform-tools/
+
+http://www.nglauber.com.br/
+
+https://www.android-libs.com/about
+
+https://android-arsenal.com/
+
+http://androidlibs.org/
+
+===============================================================================
+
+http://developer.android.com/training/basics/intents/result.html
+
+http://developer.android.com/training/basics/intents/filters.html
+
+===============================================================================
+Como conectar seu dispositivo ao android studio usando wi fi
+http://mariovalney.com/como-conectar-seu-dispositivo-ao-android-studio-usando-wi-fi/
+===============================================================================	
+Customizando Action Bar
+http://www.thiengo.com.br/customizando-actionbar-android-com-actionbar-style-generator
+http://jgilfelt.github.io/android-actionbarstylegenerator/
+===============================================================================				
+
+Extensão para Chrome reflete a tela do Android no PC
+http://olhardigital.uol.com.br/noticia/extensao-para-chrome-permite-refletir-a-tela-do-android-no-pc/50757?utm_campaign=newsletter_posicao_noticias_021&utm_medium=leia_mais&utm_source=newsletter
+
+
+=========================== URLS de Trabalho das Turmas 1 e 2 ===========================
+
+https://dl.dropboxusercontent.com/u/5992545/projeto_gcm.zip
+
+https://github.com/rodrigoHime/android-dropbox-catalogo
+
+https://github.com/esdrascosta/Sunshine
+
+https://github.com/WillFelix/NinjaBluetooth
+
+https://github.com/brunofreitas7/raspberry-android-integration
+
+https://github.com/RomuloLima/PoliglotaMobile
+
+https://www.dropbox.com/s/6csh8vex3y11jak/CaronaSolidaria.zip?dl=0
+
+https://github.com/mson00/minha_rota.git
+
+https://github.com/jpataide/Consumindo-WebService
+
+https://github.com/phsg/QualComprar
+
+https://github.com/carlosrsjunior/MyPong
+
+https://github.com/jonatascp/PhotoAlbum.git
+
+https://www.assembla.com/code/buscaproduto/subversion/nodes
+
+
+
